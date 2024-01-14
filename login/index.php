@@ -13,18 +13,14 @@ include('../function/auth.php');
 $db = new DB();
 
 if (isset($_SESSION['user'])) {
+    if (isset($_POST['remember'])) {
+        $cookie_name = "_users";
+        $cookie_value = json_encode($_SESSION['user']);
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+    }
     echo "<script> window.location.href = '../dashboard' </script>";
 }
 
-if (isset($_POST['submit'])) {
-    if (isset($_POST['remember'])) {
-        $remember = ($_POST['remember'] ? true : false);
-    } else {
-        $remember = false;
-    }
-
-    $db->login($_POST['email'], $_POST['password'], $remember);
-}
 ?>
 
 
@@ -145,6 +141,12 @@ if (isset($_POST['submit'])) {
     <script src="../assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <?php
+    if (isset($_POST['submit'])) {
+        $db->login($_POST['email'], $_POST['password']);
+        echo "<script>window.location.reload()</script>";
+    }
+    ?>
 </body>
 
 </html>

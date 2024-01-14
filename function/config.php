@@ -54,10 +54,6 @@ class DB
 
         $user = $result->fetch_assoc();
 
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $_SESSION['user'] = $user;
 
         return true;
@@ -111,7 +107,7 @@ class DB
         return $this->query($sql);
     }
 
-    public function login($email, $password, $remember)
+    public function login($email, $password)
     {
         $password = md5($password);
         $sql = "SELECT * FROM user WHERE email = '$email'";
@@ -123,15 +119,12 @@ class DB
             if ($user['status'] === 'nonaktif') {
                 return $this->swal('error', 'Gagal!', 'Aktivasi akun terlebih dahulu! Silahkan lapor ke admin');
             }
-            if ($remember) {
-                $cookie_name = "_users";
-                $cookie_value = json_encode($user);
-                setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-            }
+
             $this->setSessionUser($user['id']);
-            echo "<script> window.location.href = '../dashboard' </script>";
+            // echo "<script> window.location.href = '../dashboard' </script>";
+        } else {
+            return $this->swal('error', 'Gagal!', 'Email atau Password salah!');
         }
-        return $this->swal('error', 'Gagal!', 'Email atau Password salah!');
     }
 }
 
