@@ -9,7 +9,7 @@ $db = new DB();
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Kasir</h1>
+        <h1>Penjualan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= route('dashboard') ?>">Home</a></li>
