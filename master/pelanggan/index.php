@@ -1,6 +1,5 @@
-<?php $title = "Master Users" ?>
+<?php $title = "Master Produk" ?>
 <?php include('../../layout/header.php'); ?>
-<?php include('../../function/admin_only.php'); ?>
 <?php include('../../layout/navbar.php'); ?>
 <?php include('../../layout/sidebar.php'); ?>
 <?php
@@ -10,11 +9,11 @@ $db = new DB();
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Master Users</h1>
+        <h1>Master Pelanggan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= route('dashboard') ?>">Home</a></li>
-                <li class="breadcrumb-item active">Master Users</li>
+                <li class="breadcrumb-item active">Master Pelanggan</li>
             </ol>
         </nav>
     </div>
@@ -25,7 +24,7 @@ $db = new DB();
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Data Users</div>
+                        <div class="card-title">Data Pelanggan</div>
                         <div class="d-flex justify-content-end mb-2">
                             <button class="btn btn-primary " type="button" data-bs-toggle="modal" data-bs-target="#formModal">Tambah Data</button>
                         </div>
@@ -35,24 +34,18 @@ $db = new DB();
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama</th>
-                                        <th>Username</th>
-                                        <th>Email</th>
                                         <th>Alamat</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
+                                        <th>No. Telp</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($db->select('user', 'id,nama,email,username,alamat,status,role') as $index => $value) : ?>
+                                    <?php foreach ($db->select('pelanggan', '*') as $index => $value) : ?>
                                         <tr>
                                             <td><?= ($index + 1) ?></td>
                                             <td><?= $value['nama'] ?></td>
-                                            <td><?= $value['username'] ?></td>
-                                            <td><?= $value['email'] ?></td>
                                             <td><?= $value['alamat'] ?></td>
-                                            <td><?= $value['role'] ?></td>
-                                            <td><?= $value['status'] ?></td>
+                                            <td><?= $value['no_telp'] ?></td>
                                             <td>
                                                 <div class="d-flex gap-1">
                                                     <button id="btn-delete" data-id="<?= $value['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
@@ -80,11 +73,10 @@ $db = new DB();
 
         $('#formModal').on('hidden.bs.modal', function(e) {
             $('#modal-title').text('Tambah Data');
-            $('#email').attr('disabled', false);
-            $('#username').attr('disabled', false);
-            $('#password').attr('required', true);
             $('#ajaxForm').trigger('reset');
         });
+
+
     });
 
     $('body').on('click', '#btn-delete', function() {
@@ -144,12 +136,8 @@ $db = new DB();
                     $('#data-id').val(res.data.id);
                     $('#nama').val(res.data.nama);
                     $('#alamat').val(res.data.alamat);
-                    $('#email').val(res.data.email).attr('readonly', true);
-                    $('#username').val(res.data.username).attr('readonly', true);
-                    $('#role').val(res.data.role);
-                    $('#status').val(res.data.status);
+                    $('#no_telp').val(res.data.no_telp);
 
-                    $('#password').attr('required', false);
                     $('#modal-title').text("Edit Data");
                     $('#formModal').modal('show');
 
@@ -176,6 +164,7 @@ $db = new DB();
     $('body').on('submit', '#ajaxForm', function(e) {
         e.preventDefault();
         var formData = $("#ajaxForm").serialize();
+
         if ($('#data-id').val() === '') {
             $.ajax({
                 url: 'api.php?action=add',

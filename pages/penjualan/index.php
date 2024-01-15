@@ -1,6 +1,5 @@
-<?php $title = "Master Users" ?>
+<?php $title = "Penjualan" ?>
 <?php include('../../layout/header.php'); ?>
-<?php include('../../function/admin_only.php'); ?>
 <?php include('../../layout/navbar.php'); ?>
 <?php include('../../layout/sidebar.php'); ?>
 <?php
@@ -10,11 +9,11 @@ $db = new DB();
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Master Users</h1>
+        <h1>Kasir</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= route('dashboard') ?>">Home</a></li>
-                <li class="breadcrumb-item active">Master Users</li>
+                <li class="breadcrumb-item active">Penjualan</li>
             </ol>
         </nav>
     </div>
@@ -25,7 +24,7 @@ $db = new DB();
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Data Users</div>
+                        <div class="card-title">Data Penjualan</div>
                         <div class="d-flex justify-content-end mb-2">
                             <button class="btn btn-primary " type="button" data-bs-toggle="modal" data-bs-target="#formModal">Tambah Data</button>
                         </div>
@@ -34,27 +33,23 @@ $db = new DB();
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Alamat</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
+                                        <th>Tanggal</th>
+                                        <th>Total Harga</th>
+                                        <th>Pelanggan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($db->select('user', 'id,nama,email,username,alamat,status,role') as $index => $value) : ?>
+
+                                    <?php foreach ($db->select('penjualan', '*', "", 'pelanggan', 'penjualan.id_pelanggan = pelanggan.id') as $index => $value) : ?>
                                         <tr>
                                             <td><?= ($index + 1) ?></td>
+                                            <td><?= $value['tanggal'] ?></td>
+                                            <td><?= 'Rp ' . number_format($value['total_harga'], 0, ',', '.'); ?></td>
                                             <td><?= $value['nama'] ?></td>
-                                            <td><?= $value['username'] ?></td>
-                                            <td><?= $value['email'] ?></td>
-                                            <td><?= $value['alamat'] ?></td>
-                                            <td><?= $value['role'] ?></td>
-                                            <td><?= $value['status'] ?></td>
                                             <td>
                                                 <div class="d-flex gap-1">
+                                                    <button id="btn-detail" data-id="<?= $value['id'] ?>" class="btn btn-info btn-sm"><i class="bi bi-list-ul text-white"></i></button>
                                                     <button id="btn-delete" data-id="<?= $value['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                                                     <button id="btn-edit" data-id="<?= $value['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pen text-white"></i></button>
                                                 </div>

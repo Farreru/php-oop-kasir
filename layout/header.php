@@ -1,10 +1,11 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 if (!isset($_SESSION['user'])) {
-    echo "<sscript> window.location.href = '../login' </script>";
+    echo "<script> window.location.href = '" . route('login') . "' </script>";
 }
 
 function assets($path)

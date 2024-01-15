@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 include('../function/config.php');
-include('../function/auth.php');
+// include('../function/auth.php');
 
 $db = new DB();
 
@@ -19,6 +19,7 @@ if (isset($_SESSION['user'])) {
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
     }
     echo "<script> window.location.href = '../dashboard' </script>";
+    exit;
 }
 
 ?>
@@ -143,8 +144,11 @@ if (isset($_SESSION['user'])) {
 
     <?php
     if (isset($_POST['submit'])) {
-        $db->login($_POST['email'], $_POST['password']);
-        echo "<script>window.location.reload()</script>";
+        $login = $db->login($_POST['email'], $_POST['password']);
+        if ($login) {
+            echo "<script>window.location.reload()</script>";
+        }
+        exit;
     }
     ?>
 </body>

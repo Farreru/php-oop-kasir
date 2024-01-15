@@ -74,9 +74,14 @@ class DB
         return $this->query($sql);
     }
 
-    public function select($table, $columns = "*", $condition = "")
+    public function select($table, $columns = "*", $condition = "", $joinTable = "", $joinCondition = "")
     {
         $sql = "SELECT $columns FROM $table";
+
+        if ($joinTable !== "" && $joinCondition !== "") {
+            $sql .= " JOIN $joinTable ON $joinCondition";
+        }
+
         if ($condition !== "") {
             $sql .= " WHERE $condition";
         }
@@ -90,6 +95,7 @@ class DB
 
         return $rows;
     }
+
 
     public function update($table, $data, $condition)
     {
@@ -122,6 +128,7 @@ class DB
 
             $this->setSessionUser($user['id']);
             // echo "<script> window.location.href = '../dashboard' </script>";
+            return true;
         } else {
             return $this->swal('error', 'Gagal!', 'Email atau Password salah!');
         }

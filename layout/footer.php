@@ -36,6 +36,13 @@
         setTimeout(function() {
             $('.preloader').fadeOut('slow');
         }, 1800);
+
+        $('body').on('click', '#profile-button', function() {
+            $('#profile-button').toggleClass('show');
+            $('#profile-tab').toggleClass('show');
+        });
+
+
     });
 </script>
 
