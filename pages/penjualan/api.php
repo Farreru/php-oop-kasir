@@ -70,20 +70,47 @@ if (isset($_GET['action'])) {
                 exit;
             }
             break;
-
         case 'delete':
             if (isset($_GET['id'])) {
                 $id = $_GET['id'];
+
+                $detailsPenjualanData = $db->select('detail_penjualan', "*", "id_penjualan = $id");
+
+                $productIds = array_column($detailsPenjualanData, 'id_produk');
+                $detailsProdukData = $db->select('produk', '*', "id IN (" . implode(',', $productIds) . ")");
+
                 $delete = $db->delete("detail_penjualan", "id_penjualan = '$id'");
                 $delete2 = $db->delete("penjualan", "id = $id");
+
                 if ($delete !== false) {
+                    foreach ($detailsProdukData as $productDetails) {
+                        $productId = $productDetails['id'];
+
+                        $quantity = array_values(array_filter($detailsPenjualanData, function ($detail) use ($productId) {
+                            return $detail['id_produk'] == $productId;
+                        }))[0]['jumlah'];
+
+                        $currentStock = $productDetails['stok'];
+
+                        $newStock = $currentStock + $quantity;
+                        $updateStok = $db->update('produk', ['stok' => $newStock], "id = $productId");
+
+                        if ($updateStok === false) {
+                            echo json_encode(['success' => false, 'message' => 'Gagal Mengembalikan Stok']);
+                            exit;
+                        }
+                    }
+
                     echo json_encode(['success' => true, 'message' => 'Berhasil Dihapus']);
                     exit;
                 }
+
                 echo json_encode(['success' => false, 'message' => 'Gagal Dihapus!']);
                 exit;
             }
             break;
+
+
 
         case 'show':
             if (isset($_GET['id'])) {
