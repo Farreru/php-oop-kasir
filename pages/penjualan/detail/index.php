@@ -25,6 +25,7 @@ $db = new DB();
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Detail Penjualan</div>
+                        <h3 class="mb-2">KSRID/<?= $_GET['id'] ?></h3>
                         <div class="table-responsive p-1">
                             <table id="data-table" class="table">
                                 <thead>
@@ -35,18 +36,22 @@ $db = new DB();
                                         <th>Sub Total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="produk-list">
                                     <?php $id = $_GET['id']; ?>
                                     <?php foreach ($db->select('detail_penjualan', '*', "id_penjualan = '$id'", 'produk', 'detail_penjualan.id_produk = produk.id') as $index => $value) : ?>
                                         <tr>
                                             <td><?= ($index + 1) ?></td>
                                             <td><?= $value['nama'] ?></td>
                                             <td><?= $value['jumlah'] ?></td>
-                                            <td><?= 'Rp ' . number_format($value['sub_total'], 0, ',', '.'); ?></td>
+                                            <td data-subtotal="<?= $value['sub_total'] ?>"><?= 'Rp ' . number_format($value['sub_total'], 0, ',', '.'); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <div class="d-flex flex-column justify-content-end align-items-end mt-2 me-2">
+                                <h5 class="fw-bold text-uppercase">Total Harga</h5>
+                                <h5 id="total-harga-text">RP . </h5>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,7 +65,11 @@ $db = new DB();
 
 <script>
     $(document).ready(function() {
-        var table = new DataTable('#data-table');
+        var table = new DataTable('#data-table', {
+            paging: false,
+            searching: false,
+            info: false,
+        });
 
         $('#formModal').on('hidden.bs.modal', function(e) {
             $('#modal-title').text('Tambah Data');
@@ -69,6 +78,21 @@ $db = new DB();
             $('#password').attr('required', true);
             $('#ajaxForm').trigger('reset');
         });
+
+        var totalHarga = 0;
+        $('#produk-list tr').each(function() {
+            var subtotalText = $(this).find('td:eq(3)').data('subtotal');
+            totalHarga += parseInt(subtotalText);
+        });
+
+        console.log(totalHarga);
+
+        const formattedNumber = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        }).format(totalHarga);
+
+        $('#total-harga-text').text(formattedNumber);
     });
 
     $('body').on('click', '#btn-delete', function() {

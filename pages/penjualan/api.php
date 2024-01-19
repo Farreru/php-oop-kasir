@@ -43,33 +43,7 @@ if (isset($_GET['action'])) {
             exit;
             break;
 
-        case 'update':
-            if (isset($_POST['id'])) {
-                $id = $_GET['id'];
 
-                $password = $_POST['password'];
-
-                $fillable = [
-                    'nama' => $_POST['nama'],
-                    'alamat' => $_POST['alamat'],
-                    'status' => $_POST['status'],
-                    'role' => $_POST['role']
-                ];
-
-                if ($password !== null) {
-                    $password = md5($password);
-                    $fillable['password'] = $password;
-                }
-
-                $insert = $db->update('user', $fillable, "id = '$id'");
-                if ($insert !== false) {
-                    echo json_encode(['success' => true, 'message' => 'Berhasil Perubahan Data']);
-                    exit;
-                }
-                echo json_encode(['success' => false, 'message' => 'Gagal Perubahan Data']);
-                exit;
-            }
-            break;
         case 'delete':
             if (isset($_GET['id'])) {
                 $id = $_GET['id'];
@@ -106,21 +80,6 @@ if (isset($_GET['action'])) {
                 }
 
                 echo json_encode(['success' => false, 'message' => 'Gagal Dihapus!']);
-                exit;
-            }
-            break;
-
-
-
-        case 'show':
-            if (isset($_GET['id'])) {
-                $id = $_GET['id'];
-                $data = $db->select("user", 'id,nama,alamat,username,role,status,email', "id = '$id'");
-                if (count($data) > 0) {
-                    echo json_encode(['success' => true, 'message' => 'Berhasil Didapatkan', 'data' => $data[0]]);
-                    exit;
-                }
-                echo json_encode(['success' => false, 'message' => 'Gagal Didapatkan!']);
                 exit;
             }
             break;

@@ -44,7 +44,12 @@
                  <span>Penjualan</span>
              </a>
          </li>
-         <!-- End Profile Page Nav -->
+         <li class="nav-item">
+             <a class="nav-link <?= (!currentPath('pages/laporan')) ? 'collapsed' : '' ?>" href="<?= route('pages/laporan') ?>">
+                 <i class="bi bi-envelope-paper"></i>
+                 <span>Laporan Penjualan</span>
+             </a>
+         </li>
      </ul>
  </aside>
  <!-- End Sidebar-->

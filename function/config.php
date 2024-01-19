@@ -8,11 +8,6 @@ class DB
     private $database = 'db_kasir_adit';
     private $connection;
 
-    public function __construct()
-    {
-        // Constructor
-    }
-
     private function connect()
     {
         $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
@@ -64,7 +59,6 @@ class DB
         echo "<script> Swal.fire({icon: '$icon',title: '$title', text:'$text'})</script>";
     }
 
-    // Example CRUD methods
     public function insert($table, $data, $status = false)
     {
         $columns = implode(", ", array_keys($data));
@@ -143,25 +137,9 @@ class DB
             }
 
             $this->setSessionUser($user['id']);
-            // echo "<script> window.location.href = '../dashboard' </script>";
             return true;
         } else {
             return $this->swal('error', 'Gagal!', 'Email atau Password salah!');
         }
     }
 }
-
-// Example insert
-// $dataToInsert = array("name" => "John Doe", "email" => "john@example.com");
-// $database->insert("users", $dataToInsert);
-
-// Example select
-// $users = $database->select("users", "*", "id > 1");
-// print_r($users);
-
-// Example update
-// $dataToUpdate = array("name" => "Jane Doe");
-// $database->update("users", $dataToUpdate, "id = 1");
-
-// Example delete
-// $database->delete("users", "id = 2");

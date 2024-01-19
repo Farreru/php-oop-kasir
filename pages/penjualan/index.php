@@ -33,6 +33,7 @@ $db = new DB();
                                 <thead>
                                     <tr>
                                         <th>No.</th>
+                                        <th>ID Transaksi</th>
                                         <th>Tanggal</th>
                                         <th>Total Harga</th>
                                         <th>Pelanggan</th>
@@ -44,6 +45,7 @@ $db = new DB();
                                     <?php foreach ($db->select('penjualan', 'penjualan.id, penjualan.tanggal, penjualan.total_harga, pelanggan.nama AS nama_pelanggan, pelanggan.id AS id_pelanggan', "", 'pelanggan', 'penjualan.id_pelanggan = pelanggan.id', 'tanggal', 'DESC') as $index => $value) : ?>
                                         <tr>
                                             <td><?= ($index + 1) ?></td>
+                                            <td>KSRID/0<?= $value['id'] ?></td>
                                             <td><?= $value['tanggal'] ?></td>
                                             <td><?= 'Rp ' . number_format($value['total_harga'], 0, ',', '.'); ?></td>
                                             <td><?= $value['nama_pelanggan'] ?></td>
