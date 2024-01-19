@@ -6,41 +6,40 @@ $db = new DB();
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'add':
-            if (isset($_POST['nama'])) {
-                $email = $_POST['email'];
-                $username = $_POST['username'];
-                $emailCheck = $db->select('user', 'email', "email = '$email'");
-                $usernameCheck = $db->select('user', 'username', "username = '$username'");
-
-                if (count($emailCheck) > 0) {
-                    echo json_encode(['success' => false, 'message' => 'Email telah tersedia!']);
-                    exit;
-                }
-
-                if (count($usernameCheck) > 0) {
-                    echo json_encode(['success' => false, 'message' => 'Username telah tersedia!']);
-                    exit;
-                }
-
-                $fillable = [
-                    'nama' => $_POST['nama'],
-                    'email' => $_POST['email'],
-                    'alamat' => $_POST['alamat'],
-                    'password' => md5($_POST['password']),
-                    'username' => $_POST['username'],
-                    'status' => $_POST['status'],
-                    'role' => $_POST['role']
+            if (isset($_POST['pelanggan'])) {
+                $fillablePenjualan = [
+                    'id_pelanggan' => $_POST['pelanggan'],
+                    'tanggal' => $_POST['tanggal'],
+                    'total_harga' => $_POST['total_harga'],
                 ];
 
-                $insert = $db->insert('user', $fillable);
-                if ($insert !== false) {
+                $penjualanId = $db->insert('penjualan', $fillablePenjualan, true);
+
+                if ($penjualanId !== false) {
+                    foreach ($_POST['productListDetails'] as $productDetails) {
+                        $fillableDetailPenjualan = [
+                            'id_penjualan' => $penjualanId,
+                            'id_produk' => $productDetails['id_produk'],
+                            'jumlah' => $productDetails['jumlah'],
+                            'sub_total' => $productDetails['sub_total'],
+                        ];
+
+                        $insertDetailPenjualan = $db->insert('detail_penjualan', $fillableDetailPenjualan);
+
+                        if ($insertDetailPenjualan === false) {
+                            echo json_encode(['success' => false, 'message' => 'Gagal Menambahkan Detail Penjualan']);
+                            exit;
+                        }
+                    }
+
                     echo json_encode(['success' => true, 'message' => 'Berhasil Menambahkan Data']);
                     exit;
                 }
-                echo json_encode(['success' => false, 'message' => 'Gagal Menambahkan Data']);
-                exit;
             }
+            echo json_encode(['success' => false, 'message' => 'Gagal Menambahkan Data']);
+            exit;
             break;
+
 
         case 'update':
             if (isset($_POST['id'])) {

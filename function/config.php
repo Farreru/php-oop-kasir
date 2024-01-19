@@ -65,16 +65,25 @@ class DB
     }
 
     // Example CRUD methods
-    public function insert($table, $data)
+    public function insert($table, $data, $status = false)
     {
         $columns = implode(", ", array_keys($data));
         $values = implode("', '", array_map([$this, 'escapeString'], array_values($data)));
 
         $sql = "INSERT INTO $table ($columns) VALUES ('$values')";
-        return $this->query($sql);
+
+        $this->connect();
+        $result = $this->connection->query($sql);
+        if ($status) {
+            return $result;
+        }
+        $lastInsertedId = $this->connection->insert_id;
+        $this->disconnect();
+
+        return $lastInsertedId;
     }
 
-    public function select($table, $columns = "*", $condition = "", $joinTable = "", $joinCondition = "")
+    public function select($table, $columns = "*", $condition = "", $joinTable = "", $joinCondition = "", $orderByColumn = "", $orderBy = "ASC")
     {
         $sql = "SELECT $columns FROM $table";
 
@@ -84,6 +93,14 @@ class DB
 
         if ($condition !== "") {
             $sql .= " WHERE $condition";
+        }
+
+        if ($orderByColumn !== "") {
+            if ($orderBy !== "ASC") {
+                $sql .= " ORDER BY $orderByColumn $orderBy";
+            } else {
+                $sql .= " ORDER BY $orderByColumn $orderBy";
+            }
         }
 
         $result = $this->query($sql);
@@ -115,13 +132,12 @@ class DB
 
     public function login($email, $password)
     {
-        $password = md5($password);
         $sql = "SELECT * FROM user WHERE email = '$email'";
         $result = $this->query($sql);
 
         $user = $result->fetch_assoc();
 
-        if ($user['password'] === $password) {
+        if (password_verify($password, $user['password'])) {
             if ($user['status'] === 'nonaktif') {
                 return $this->swal('error', 'Gagal!', 'Aktivasi akun terlebih dahulu! Silahkan lapor ke admin');
             }

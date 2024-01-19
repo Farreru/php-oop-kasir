@@ -1,15 +1,15 @@
-<?php $title = "Penjualan" ?>
-<?php include('../../layout/header.php'); ?>
-<?php include('../../layout/navbar.php'); ?>
-<?php include('../../layout/sidebar.php'); ?>
+<?php $title = "Detail Penjualan" ?>
+<?php include('../../../layout/header.php'); ?>
+<?php include('../../../layout/navbar.php'); ?>
+<?php include('../../../layout/sidebar.php'); ?>
 <?php
-include('../../function/config.php');
+include('../../../function/config.php');
 $db = new DB();
 ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Kasir</h1>
+        <h1>Detail Penjualan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= route('dashboard') ?>">Home</a></li>
@@ -24,36 +24,25 @@ $db = new DB();
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Data Penjualan</div>
-                        <div class="d-flex justify-content-end mb-2">
-                            <button class="btn btn-primary " type="button" data-bs-toggle="modal" data-bs-target="#formModal">Tambah Data</button>
-                        </div>
+                        <div class="card-title">Detail Penjualan</div>
                         <div class="table-responsive p-1">
                             <table id="data-table" class="table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Tanggal</th>
-                                        <th>Total Harga</th>
-                                        <th>Pelanggan</th>
-                                        <th>Aksi</th>
+                                        <th>Produk</th>
+                                        <th>Jumlah</th>
+                                        <th>Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <?php foreach ($db->select('penjualan', '*', "", 'pelanggan', 'penjualan.id_pelanggan = pelanggan.id') as $index => $value) : ?>
+                                    <?php $id = $_GET['id']; ?>
+                                    <?php foreach ($db->select('detail_penjualan', '*', "id_penjualan = '$id'", 'produk', 'detail_penjualan.id_produk = produk.id') as $index => $value) : ?>
                                         <tr>
                                             <td><?= ($index + 1) ?></td>
-                                            <td><?= $value['tanggal'] ?></td>
-                                            <td><?= 'Rp ' . number_format($value['total_harga'], 0, ',', '.'); ?></td>
                                             <td><?= $value['nama'] ?></td>
-                                            <td>
-                                                <div class="d-flex gap-1">
-                                                    <button id="btn-detail" data-id="<?= $value['id'] ?>" class="btn btn-info btn-sm"><i class="bi bi-list-ul text-white"></i></button>
-                                                    <button id="btn-delete" data-id="<?= $value['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                                                    <button id="btn-edit" data-id="<?= $value['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pen text-white"></i></button>
-                                                </div>
-                                            </td>
+                                            <td><?= $value['jumlah'] ?></td>
+                                            <td><?= 'Rp ' . number_format($value['sub_total'], 0, ',', '.'); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -67,7 +56,7 @@ $db = new DB();
 </main>
 <!-- End #main -->
 <?php include('modal.php'); ?>
-<?php include('../../layout/footer.php'); ?>
+<?php include('../../../layout/footer.php'); ?>
 
 <script>
     $(document).ready(function() {

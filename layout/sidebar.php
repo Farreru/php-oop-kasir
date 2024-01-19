@@ -8,8 +8,9 @@
              </a>
          </li>
          <!-- End Dashboard Nav -->
+
          <li class="nav-item">
-             <a class="nav-link <?= (currentPath('master') ? '' : 'collapsed') ?>" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#" aroa=>
+             <a id="master-pages-button" class="nav-link <?= (currentPath('master') ? '' : 'collapsed') ?>" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= (currentPath('master') ? 'true' : 'false') ?>">
                  <i class="bi bi-menu-button-wide"></i><span>Master</span><i class="bi bi-chevron-down ms-auto"></i>
              </a>
              <ul id="master-nav" class="nav-content collapse <?= (currentPath('master') ? 'show' : 'collapse') ?>" data-bs-parent="#sidebar-nav">

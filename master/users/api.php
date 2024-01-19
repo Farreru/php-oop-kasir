@@ -22,11 +22,13 @@ if (isset($_GET['action'])) {
                     exit;
                 }
 
+                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
                 $fillable = [
                     'nama' => $_POST['nama'],
                     'email' => $_POST['email'],
                     'alamat' => $_POST['alamat'],
-                    'password' => md5($_POST['password']),
+                    'password' => $hashedPassword,
                     'username' => $_POST['username'],
                     'status' => $_POST['status'],
                     'role' => $_POST['role']
