@@ -24,7 +24,7 @@ $db = new DB();
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Penjualan</div>
+                        <div class="card-title">Laporan Penjualan</div>
                         <div class="d-flex justify-content-end p-2">
                             <a href="cetak"><button class="btn btn-success"><i class="bi bi-printer"></i>&nbsp;&nbsp;Cetak</button></a>
                         </div>
