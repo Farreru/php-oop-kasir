@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 20, 2024 at 07:32 AM
+-- Generation Time: Jan 20, 2024 at 07:40 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -33,7 +33,7 @@ CREATE TABLE `detail_penjualan` (
   `id_produk` int UNSIGNED NOT NULL,
   `jumlah` int NOT NULL,
   `sub_total` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -43,10 +43,10 @@ CREATE TABLE `detail_penjualan` (
 
 CREATE TABLE `pelanggan` (
   `id` int UNSIGNED NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `alamat` text NOT NULL,
-  `no_telp` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `nama` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
+  `no_telp` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE `penjualan` (
   `tanggal` datetime NOT NULL,
   `total_harga` int NOT NULL,
   `id_pelanggan` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -69,10 +69,10 @@ CREATE TABLE `penjualan` (
 
 CREATE TABLE `produk` (
   `id` int UNSIGNED NOT NULL,
-  `nama` varchar(255) NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `harga` int NOT NULL,
   `stok` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -82,14 +82,14 @@ CREATE TABLE `produk` (
 
 CREATE TABLE `user` (
   `id` int UNSIGNED NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` text NOT NULL,
-  `alamat` text NOT NULL,
-  `role` enum('admin','petugas') DEFAULT 'petugas',
-  `status` enum('aktif','nonaktif') NOT NULL DEFAULT 'nonaktif'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `nama` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` text COLLATE utf8mb4_general_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','petugas') COLLATE utf8mb4_general_ci DEFAULT 'petugas',
+  `status` enum('aktif','nonaktif') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'nonaktif'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
