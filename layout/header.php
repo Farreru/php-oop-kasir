@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -10,7 +14,7 @@ if (!isset($_SESSION['user'])) {
 
 function assets($path)
 {
-    $baseURL = 'http://localhost/kasir-adit/assets';
+    $baseURL = $_ENV['APP_URL'] . '/assets';
     $path = ltrim($path, '/');
 
     return $baseURL . '/' . $path;
@@ -18,7 +22,7 @@ function assets($path)
 
 function route($path)
 {
-    $baseURL = 'http://localhost/kasir-adit';
+    $baseURL = $_ENV['APP_URL'];
     $path = ltrim($path, '/');
 
     return $baseURL . '/' . $path;
@@ -27,7 +31,13 @@ function route($path)
 function currentPath($path)
 {
     $currentUri = $_SERVER['REQUEST_URI'];
-    $currentUri = str_replace('/kasir-adit/', '', $currentUri);
+
+    $rootFolder = trim($_ENV['APP_ROOT_FOLDER'] ?? '', '/');
+
+    if ($rootFolder !== '') {
+        $currentUri = str_replace("/$rootFolder/", '', $currentUri);
+    }
+
     if (strpos($currentUri, $path) !== false) {
         return true;
     }
