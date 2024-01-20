@@ -1,11 +1,22 @@
 <?php
-
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 class DB
 {
-    private $host = 'localhost';
-    private $username = 'root';
-    private $password = '';
-    private $database = 'db_kasir_adit';
+    private $host;
+    private $username;
+    private $password;
+    private $database;
+
+    public function __construct()
+    {
+        $this->host = $_ENV['DB_HOST'];
+        $this->username = $_ENV['DB_USERNAME'];
+        $this->password = $_ENV['DB_PASSWORD'];
+        $this->database = $_ENV['DB_DATABASE'];
+    }
+
     private $connection;
 
     private function connect()
