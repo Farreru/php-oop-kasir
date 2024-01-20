@@ -2,10 +2,10 @@
 
 class DB
 {
-    private $host = 'sql105.byethost13.com';
-    private $username = 'b13_34342851';
-    private $password = '@@@asede123';
-    private $database = 'b13_34342851_kasir_7';
+    private $host = 'localhost';
+    private $username = 'root';
+    private $password = '';
+    private $database = 'db_kasir_adit';
     private $connection;
 
     private function connect()
