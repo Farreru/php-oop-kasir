@@ -13,47 +13,18 @@
         <ul class="d-flex align-items-center">
             <li class="nav-item dropdown pe-3">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" onclick="profileMenuButton()" href="#" data-bs-toggle="dropdown" id="profile-button" aria-expanded="false" data-bs-target="profile-tab">
-                    <img src="<?= assets('img/profile-img.jpg') ?>" alt="Profile" class="rounded-circle" />
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span> </a><!-- End Profile Iamge Icon -->
+                    <img src="<?= assets('img/user_icon.png') ?>" alt="Profile" class="rounded-circle border" />
+                    <span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['user']['nama'] ?></span> </a><!-- End Profile Iamge Icon -->
 
                 <ul id="profile-tab" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <h6><?= $_SESSION['user']['nama'] ?></h6>
+                        <span><?= $_SESSION['user']['role'] ?></span>
                     </li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
 
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>My Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-gear"></i>
-                            <span>Account Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
 
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="<?= route('logout') ?>">
