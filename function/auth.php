@@ -1,7 +1,12 @@
 <?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 function route($path)
 {
-    $baseURL = 'http://localhost/kasir-adit';
+    $baseURL = $_ENV['APP_URL'];
     $path = ltrim($path, '/');
 
     return $baseURL . '/' . $path;
