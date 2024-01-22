@@ -29,6 +29,10 @@ $db = new DB();
                             <a href="cetak"><button class="btn btn-success"><i class="bi bi-printer"></i>&nbsp;&nbsp;Cetak</button></a>
                         </div>
                         <div class="table-responsive p-1">
+                            <div class="form-group col-lg-2 col-md-2 p-2">
+                                <label for="hari-tanggal">Tanggal</label>
+                                <input type="date" name="hari-tanggal" class="form-control" id="hari-tanggal">
+                            </div>
                             <table id="data-table" class="table">
                                 <thead>
                                     <tr>

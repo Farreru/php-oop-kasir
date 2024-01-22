@@ -94,6 +94,46 @@ if (isset($_GET['action'])) {
             exit;
             break;
 
+        case 'show':
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $data = $db->select(
+                    'penjualan',
+                    'penjualan.id, penjualan.tanggal, penjualan.total_harga, pelanggan.nama AS nama_pelanggan, pelanggan.id AS id_pelanggan',
+                    "penjualan.id = '$id'",
+                    'pelanggan',
+                    'penjualan.id_pelanggan = pelanggan.id',
+                    'tanggal',
+                    'DESC'
+                );
+                if (count($data) > 0) {
+                    echo json_encode(['success' => true, 'message' => 'Berhasil Didapatkan', 'data' => $data[0]]);
+                    exit;
+                }
+                echo json_encode(['success' => false, 'message' => 'Gagal Didapatkan!']);
+                exit;
+            }
+            break;
+
+        case 'produk_detail':
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $data = $db->select('detail_penjualan', '*', "id_penjualan = '$id'", 'produk', 'detail_penjualan.id_produk = produk.id');
+                if (count($data) > 0) {
+                    echo json_encode(['success' => true, 'message' => 'Berhasil Didapatkan', 'data' => $data]);
+                    exit;
+                }
+                echo json_encode(['success' => false, 'message' => 'Gagal Didapatkan!']);
+                exit;
+            }
+            break;
+
+        case 'produk':
+            $produkData = $db->select('produk', '*', '', '', '', 'nama', 'ASC');
+
+            echo json_encode($produkData);
+            break;
+
         default:
             # code...
             break;

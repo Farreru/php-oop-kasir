@@ -51,6 +51,7 @@ $db = new DB();
                                             <td><?= $value['nama_pelanggan'] ?></td>
                                             <td>
                                                 <div class="d-flex gap-1">
+                                                    <button id="btn-cetak" data-id="<?= $value['id'] ?>" class="btn btn-success btn-sm"><i class="bi bi-printer text-white"></i></button>
                                                     <button id="btn-detail" data-id="<?= $value['id'] ?>" class="btn btn-info btn-sm"><i class="bi bi-list-ul text-white"></i></button>
                                                     <button id="btn-delete" data-id="<?= $value['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                                                 </div>
@@ -121,6 +122,101 @@ $db = new DB();
             $('#tanggal').val(datetime);
             // console.log(datetime);
         }, 1000)
+
+        function fetchData() {
+            $.ajax({
+                url: 'api.php?action=produk',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    updateTable(data);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+
+        function updateTable(data) {
+            var table = $('#data-produk tbody');
+            table.empty();
+
+            $.each(data, function(index, value) {
+                var row = `<tr>
+                                <td>${index + 1}</td>
+                                <td>${value.nama}</td>
+                                <td id="produk-list-harga-${value.id}" data-harga="${value.harga}">Rp ${new Intl.NumberFormat('id-ID').format(value.harga)}</td>
+                                <td id="produk-list-stok-${value.id}">${value.stok}</td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <button id="btn-add" data-harga="${value.harga}" data-nama="${value.nama}" data-id="${value.id}" class="btn btn-success btn-sm"><i class="bi bi-cart text-white"></i></button>
+                                    </div>
+                                </td>
+                            </tr>`;
+                table.append(row);
+            });
+        }
+
+        setInterval(fetchData, 4000);
+        fetchData();
+    });
+
+    $('body').on('click', '#btn-cetak', function() {
+        var id = $(this).data('id');
+        var data;
+        var data_produk;
+
+        $.ajax({
+            url: `api.php?action=produk&id=${id}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    data_produk = res.data;
+                }
+            }
+        })
+
+        $.ajax({
+            url: `api.php?action=show&id=${id}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    data = res.data;
+                    console.log(data);
+                    Swal.fire({
+                        title: `KSR/0${data.id}`,
+                        html: `
+        <div style="text-align: left;">
+            <p><b>Tanggal:</b> ${data.tanggal}</p>
+            <p><b>Nama Pelanggan:</b> ${data.nama_pelanggan}</p>
+            <p><b>Total Harga:</b> Rp ${new Intl.NumberFormat('id-ID').format(data.total_harga)}</p>
+            <hr>
+            <p><b>Produk</b></p>
+            
+                <table border="1">
+                    <tbody id="modal-detail-produk">
+                    </tbody>
+                </table>
+            
+        </div>
+    `
+                    });
+
+                    data_produk.forEach(value => {
+                        $('#modal-detail-produk').append(`
+                        <tr>
+                            <td>${value.nama}</td>
+                            <td>${value.jumlah}</td>
+                            <td>${value.sub_total}</td>
+                        </tr>
+                        `);
+                    })
+
+                }
+            },
+        })
 
     });
 
